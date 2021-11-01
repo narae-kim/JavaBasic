@@ -6,44 +6,53 @@ import java.util.List;
 import java.util.Map;
 
 public class WordDataBase {
-    private Map<String, List<Integer[]>> wordMap = new HashMap<String, List<Integer[]>>();
-    private List<Integer[]> locations;
-    private Integer[] location;
+    private Map<String, List<Word>> wordMap = new HashMap<String, List<Word>>();
+    private List<Word> wordList;
+    private Word word;
 
-    public void add(String word, Integer ln, Integer column) {
-        if (wordMap.containsKey(word)) {
-            locations = wordMap.get(word);
+    /*
+     * Add the new line number and the new column number to the keyword.
+     */
+    public void add(String keyword, Integer ln, Integer column) {
+        if (wordMap.containsKey(keyword)) {
+            wordList = wordMap.get(keyword);
         } else {
-            locations = new ArrayList<Integer[]>();
+            wordList = new ArrayList<Word>();
         }
-        location = new Integer[2];
-        location[0] = ln;
-        location[1] = column;
-        locations.add(location);
-        wordMap.put(word, locations);
+        word = new Word(keyword);
+        word.setRow(ln);
+        word.setColumn(column);
+        wordList.add(word);
+        wordMap.put(keyword, wordList);
     }
 
+    /*
+     * Print all keywords and locations of the input file.
+     */
     public void printAll() {
-        for (Map.Entry<String, List<Integer[]>> entry : wordMap.entrySet()) {
+        for (Map.Entry<String, List<Word>> entry : wordMap.entrySet()) {
             String key = entry.getKey();
             System.out.println("The word location of \"" + key + "\" is:");
-            List<Integer[]> value = entry.getValue();
-            for (Integer[] location : value) {
-                System.out.println("\tln: " + location[0] + "\t\t\tcolumn: " + location[1]);
+            List<Word> value = entry.getValue();
+            for (Word word : value) {
+                System.out.println("\tln: " + word.getRow() + "\t\t\tcolumn: " + word.getColumn());
             }
         }
     }
 
-    public void printWordLocation(String word) {
-        word = WordProcessor.process(word);
-        if (wordMap.containsKey(word)) {
-            List<Integer[]> wordLocation = wordMap.get(word);
-            System.out.println("The word \"" + word + "\" occurs in " + wordLocation.size() + " places:");
-            for (Integer[] location : wordLocation) {
-                System.out.println("\tln: " + location[0] + "\t\t\tcolumn: " + location[1]);
+    /*
+     * Print all locations of the keyword in the input file.
+     */
+    public void printWordLocation(String keyword) {
+        keyword = WordProcessor.process(keyword);
+        if (wordMap.containsKey(keyword)) {
+            List<Word> wordLocation = wordMap.get(keyword);
+            System.out.println("The word \"" + keyword + "\" occurs in " + wordLocation.size() + " places:");
+            for (Word word : wordLocation) {
+                System.out.println("\tln: " + word.getRow() + "\t\t\tcolumn: " + word.getColumn());
             }
         } else {
-            System.out.println("The word \"" + word + "\" does not exist in the file.");
+            System.out.println("The word \"" + keyword + "\" does not exist in the file.");
         }
     }
 }

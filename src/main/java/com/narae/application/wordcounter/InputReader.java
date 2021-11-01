@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 public class InputReader {
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
+    /*
+     * Get CLI input.
+     */
     public String getInput() {
         try {
             return reader.readLine();
